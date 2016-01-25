@@ -33,6 +33,7 @@ module.exports = function (grunt) {
         files: {
           '<%= config.app %>/<%= config.jsDest %>/lib.js': [
             '<%= config.bower %>/angular/angular.js',
+            '<%= config.bower %>/angular-ui-router/release/angular-ui-router.js',
             '<%= config.bower %>/backand/backand.js'
           ]
         }

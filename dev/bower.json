@@ -14,8 +14,8 @@
     "tests"
   ],
   "devDependencies": {
-    "angular-new-router": "~0.5.3",
     "angular": "~1.4.9",
-    "bootstrap-sass": "~3.3.6"
+    "bootstrap-sass": "~3.3.6",
+    "angular-ui-router": "~0.2.17"
   }
 }
