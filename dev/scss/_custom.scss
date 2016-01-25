@@ -1,0 +1,14 @@
+body {
+	margin: 20px;
+}
+
+#wrapper {
+	width: 800px;
+
+	form {
+		input,
+		textarea {
+			display: block;
+		}
+	}
+}
