@@ -23,7 +23,7 @@ module.exports = function (grunt) {
         files: {
           '<%= config.app %>/<%= config.jsDest %>/global.js': [
             '<%= config.jsSrc %>/app.js',
-            //'<%= config.jsSrc %>/directives.js',
+            '<%= config.jsSrc %>/directives.js',
             '<%= config.jsSrc %>/controllers.js',
             '<%= config.jsSrc %>/services.js'
           ]

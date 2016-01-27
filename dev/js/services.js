@@ -19,10 +19,22 @@
         })
         .then(function (data) {
           console.log(data);
-            console.log('it worked!');
+          console.log('it worked!');
         }, function (data) {
             console.log('it failed :(');
         });
+      },
+      listContacts: function () {
+        $http({
+          method: 'GET',
+          url: Backand.getApiUrl() + '/1/objects/items',
+          params: {
+            pageSize: 20,
+            pageNumber: 1,
+            filter: null,
+            sort: ''
+          }
+        })
       }
     };
   }]);

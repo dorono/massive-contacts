@@ -1,21 +1,17 @@
 (function () {
   'use strict';
 
-  var app = angular.module('ContactsApp');
-  /*app.directive('submitTask', function (ToDoService) {
+  var drctv = angular.module('ContactsApp.directives', ['ui.router']);
+
+  drctv.directive('formBehavior', function ($state) {
     return {
-      replace: true,
-      restrict: 'E',
-      template: '<button type="button">Submit Task!</button>',
-      link: function (scope, elem, attrs) {
-        elem.bind('click', function () {
-          console.log('scope');
-          console.log('elem');
-          console.log('attrs');
-          //ToDoService.submitTodo();
+      link: function (scope, element) {
+        element.bind ('submit', function () {
+          scope.contactData = null;
+          $state.go('home');
         });
       }
     }
-  });*/
+  });
 
 }());
