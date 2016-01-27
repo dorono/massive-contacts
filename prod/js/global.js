@@ -13,10 +13,27 @@
     .setAppName('contacts')
     .setAnonymousToken('099b9441-ceda-4585-9a04-3b1bd760fe49');
 
+    $urlRouterProvider.otherwise('/');
+
     $stateProvider.
       state('home', {
         url: '/',
-        templateUrl: 'partials/list.html'
+        templateUrl: 'partials/list.html',
+        resolve: {
+          contactData: function (ContactsFactory) {
+            console.log('from the app');
+            console.log(ContactsFactory.listContacts());
+            return ContactsFactory.listContacts();
+          }
+
+          /*ContactsFactory: 'ContactsFactory',
+          contactData: function (ContactsFactory) {
+            console.log('from the app');
+            console.log(ContactsFactory.listContacts());
+            return ContactsFactory.listContacts();
+          }*/
+        },
+        controller: 'ContactsCtrl'
       })
       .state('addContact', {
         url: '/addContact',
@@ -50,8 +67,12 @@
   'use strict';
   var ctrl = angular.module('ContactsApp.controllers', []);
 
-  ctrl.controller('ContactsCtrl', function ($scope, ContactsFactory) {
-    $scope.contactData = {};
+  ctrl.controller('ContactsCtrl', function ($scope, ContactsFactory, contactData) {
+    console.log('data in the controller');
+    console.log(contactData.data);
+    $scope.contactData = contactData.data;
+    $scope.index = 0;
+
 
     $scope.processForm = function () {
       console.log($scope.contactData);
@@ -75,7 +96,6 @@
 
     return {
       submitContact: function (object) {
-
         $http({
           method: 'POST',
           url: getApiUrl(contactsObj, Backand),
@@ -88,8 +108,8 @@
             console.log('it failed :(');
         });
       },
-      listContacts: function () {
-        $http({
+      listContacts: function ($q) {
+        return $http({
           method: 'GET',
           url: Backand.getApiUrl() + '/1/objects/items',
           params: {
@@ -98,7 +118,12 @@
             filter: null,
             sort: ''
           }
-        })
+        }).then(function (response) {
+          console.log('here is the response');
+          console.log(response.data);
+          return response.data;
+        });
+
       }
     };
   }]);

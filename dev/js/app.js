@@ -13,10 +13,27 @@
     .setAppName('contacts')
     .setAnonymousToken('099b9441-ceda-4585-9a04-3b1bd760fe49');
 
+    $urlRouterProvider.otherwise('/');
+
     $stateProvider.
       state('home', {
         url: '/',
-        templateUrl: 'partials/list.html'
+        templateUrl: 'partials/list.html',
+        resolve: {
+          contactData: function (ContactsFactory) {
+            console.log('from the app');
+            console.log(ContactsFactory.listContacts());
+            return ContactsFactory.listContacts();
+          }
+
+          /*ContactsFactory: 'ContactsFactory',
+          contactData: function (ContactsFactory) {
+            console.log('from the app');
+            console.log(ContactsFactory.listContacts());
+            return ContactsFactory.listContacts();
+          }*/
+        },
+        controller: 'ContactsCtrl'
       })
       .state('addContact', {
         url: '/addContact',

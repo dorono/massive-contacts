@@ -11,7 +11,6 @@
 
     return {
       submitContact: function (object) {
-
         $http({
           method: 'POST',
           url: getApiUrl(contactsObj, Backand),
@@ -24,8 +23,8 @@
             console.log('it failed :(');
         });
       },
-      listContacts: function () {
-        $http({
+      listContacts: function ($q) {
+        return $http({
           method: 'GET',
           url: Backand.getApiUrl() + '/1/objects/items',
           params: {
@@ -34,7 +33,12 @@
             filter: null,
             sort: ''
           }
-        })
+        }).then(function (response) {
+          console.log('here is the response');
+          console.log(response.data);
+          return response.data;
+        });
+
       }
     };
   }]);
