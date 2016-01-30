@@ -2,6 +2,41 @@ body {
 	margin: 20px;
 }
 
+.caret-up {
+	transform: rotateX(180deg);
+}
+
+#contact-list {
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			background: #d9edf7;
+			padding: 10px;
+		}
+	}
+}
+
+#header {
+	a {
+		display: none;
+
+		&.btn {
+			position: relative;
+			top: 50%;
+			-webkit-transform: translateY(50%);
+			-ms-transform: translateY(50%);
+			transform: translateY(50%);
+		}
+
+		&.home {
+			display: block;
+		}
+	}
+}
+
 #wrapper {
 	width: 800px;
 

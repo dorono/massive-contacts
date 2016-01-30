@@ -22,27 +22,25 @@
         resolve: {
           contactData: function (ContactsFactory) {
             console.log('from the app');
-            console.log(ContactsFactory.listContacts());
+            //console.log(ContactsFactory.listContacts());
             return ContactsFactory.listContacts();
           }
-
-          /*ContactsFactory: 'ContactsFactory',
-          contactData: function (ContactsFactory) {
-            console.log('from the app');
-            console.log(ContactsFactory.listContacts());
-            return ContactsFactory.listContacts();
-          }*/
         },
         controller: 'ContactsCtrl'
       })
       .state('addContact', {
         url: '/addContact',
         templateUrl: 'partials/add-contact.html',
-        controller: 'ContactsCtrl'
+        controller: 'AddContactCtrl'
       });
-  });
-
-
+    })
+    .run([
+      '$rootScope',
+      '$state',
+      function ($rootScope, $state) {
+        $rootScope.$state = $state;
+      }
+    ]);
 })();
 
 (function () {
@@ -53,7 +51,7 @@
   drctv.directive('formBehavior', function ($state) {
     return {
       link: function (scope, element) {
-        element.bind ('submit', function () {
+        element.bind('submit', function () {
           scope.contactData = null;
           $state.go('home');
         });
@@ -61,26 +59,40 @@
     }
   });
 
+  drctv.directive('preventDupe', function () {
+    return {
+      link: function (scope, element) {
+        element.bind('blur', function () {
+          console.log('deduped!');
+        });
+      }
+    }
+  });
 }());
 
 (function () {
   'use strict';
   var ctrl = angular.module('ContactsApp.controllers', []);
 
-  ctrl.controller('ContactsCtrl', function ($scope, ContactsFactory, contactData) {
+  ctrl.controller('ContactsCtrl', function ($scope, $state, $timeout, ContactsFactory, contactData) {
     console.log('data in the controller');
-    console.log(contactData.data);
+    console.log(contactData);
+
     $scope.contactData = contactData.data;
     $scope.index = 0;
+    $scope.uiRouterState = $state;
+    $scope.sortType = 'last_name';
+    $scope.sortReverse = false;
+    $scope.searchContacts = '';
 
+  });
 
+  ctrl.controller('AddContactCtrl', function ($scope, ContactsFactory) {
     $scope.processForm = function () {
       console.log($scope.contactData);
       ContactsFactory.submitContact($scope.contactData);
     }
-
   });
-
 }());
 
 (function () {
@@ -108,12 +120,12 @@
             console.log('it failed :(');
         });
       },
-      listContacts: function ($q) {
+      listContacts: function () {
         return $http({
           method: 'GET',
           url: Backand.getApiUrl() + '/1/objects/items',
           params: {
-            pageSize: 20,
+            pageSize: 100,
             pageNumber: 1,
             filter: null,
             sort: ''

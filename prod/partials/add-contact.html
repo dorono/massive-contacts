@@ -1,8 +1,8 @@
-<form name="create-contact" class="create-contact" role="form" ng-submit="processForm() "ng-controller="ContactsCtrl" form-behavior>
+<form name="create-contact" class="create-contact" role="form" ng-submit="processForm() "ng-controller="AddContactCtrl" form-behavior>
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 form-group">
-			<label for="firstName">Last Name</label>
-			<input type="text" ng-model="contactData.first_name" name="firstName" placeholder="First Name" class="form-control" id="firstName">
+			<label for="firstName">First Name</label>
+			<input type="text" ng-model="contactData.first_name" name="firstName" placeholder="First Name" class="form-control" id="firstName" required>
 		</div>
 		<div class="col-xs-12 col-sm-6 form-group">
 			<label for="lastName">Last Name</label>
@@ -12,7 +12,7 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 form-group">
 			<label for="email">Email</label>
-			<input type="email" ng-model="contactData.email" name="email" placeholder="Email" class="form-control" id="email">
+			<input ng-model="contactData.email" name="email" placeholder="Email" class="form-control" id="email">
 		</div>
 		<div class="col-xs-12 col-sm-6 form-group">
 			<label for="phone">Phone</label>

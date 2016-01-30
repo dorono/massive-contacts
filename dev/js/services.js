@@ -23,12 +23,12 @@
             console.log('it failed :(');
         });
       },
-      listContacts: function ($q) {
+      listContacts: function () {
         return $http({
           method: 'GET',
           url: Backand.getApiUrl() + '/1/objects/items',
           params: {
-            pageSize: 20,
+            pageSize: 100,
             pageNumber: 1,
             filter: null,
             sort: ''

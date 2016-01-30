@@ -8,7 +8,14 @@
 <body>
 
 <div class="container" id="wrapper">
-	<h1>Massive Contacts</h1>
+	<div class="row" id="header">
+		<div class="col-xs-12 col-sm-9">
+			<h1>Massive Contacts</h1>
+		</div>
+		<div class="col-xs-12 col-sm-3 text-right">
+			<a class="btn btn-success {{$state.current.name}}" href="#/addContact">Add Contact</a>
+		</div>
+	</div>
 
 	<div ui-view></div>
 </div>

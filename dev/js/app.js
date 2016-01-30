@@ -22,25 +22,23 @@
         resolve: {
           contactData: function (ContactsFactory) {
             console.log('from the app');
-            console.log(ContactsFactory.listContacts());
+            //console.log(ContactsFactory.listContacts());
             return ContactsFactory.listContacts();
           }
-
-          /*ContactsFactory: 'ContactsFactory',
-          contactData: function (ContactsFactory) {
-            console.log('from the app');
-            console.log(ContactsFactory.listContacts());
-            return ContactsFactory.listContacts();
-          }*/
         },
         controller: 'ContactsCtrl'
       })
       .state('addContact', {
         url: '/addContact',
         templateUrl: 'partials/add-contact.html',
-        controller: 'ContactsCtrl'
+        controller: 'AddContactCtrl'
       });
-  });
-
-
+    })
+    .run([
+      '$rootScope',
+      '$state',
+      function ($rootScope, $state) {
+        $rootScope.$state = $state;
+      }
+    ]);
 })();
