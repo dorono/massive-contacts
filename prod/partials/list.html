@@ -27,7 +27,7 @@
 			</th>
 			<th>Notes</th>
 		</tr>
-		<tr ng-repeat="contact in contactData | orderBy:sortType:sortReverse | filter: searchContacts ">
+		<tr ng-repeat="contact in contactData | filter: searchContacts ">
 			<td>{{contact.first_name}} {{contact.last_name}}</td>
 			<td>{{contact.email}}</td>
 			<td>{{contact.phone}}</td>

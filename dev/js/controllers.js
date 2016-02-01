@@ -6,7 +6,7 @@
     console.log('data in the controller');
     console.log(contactData);
 
-    $scope.contactData = contactData.data;
+    $scope.contactData = contactData;
     $scope.index = 0;
     $scope.uiRouterState = $state;
     $scope.sortType = 'last_name';

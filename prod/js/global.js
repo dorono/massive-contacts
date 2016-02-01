@@ -78,7 +78,7 @@
     console.log('data in the controller');
     console.log(contactData);
 
-    $scope.contactData = contactData.data;
+    $scope.contactData = contactData;
     $scope.index = 0;
     $scope.uiRouterState = $state;
     $scope.sortType = 'last_name';
@@ -106,6 +106,22 @@
 
     var contactsObj = 'items';
 
+    function sortData (data, sortBy) {
+      var arrToSort = [];
+
+      angular.forEach(data, function (v, k) {
+        angular.forEach(v, function (val, key) {
+          arrToSort.push(val);
+        });
+      });
+
+      arrToSort.sort(function (a, b) {
+        return a[sortBy].localeCompare(b[sortBy]);
+      });
+
+      return arrToSort;
+    }
+
     return {
       submitContact: function (object) {
         $http({
@@ -120,7 +136,9 @@
             console.log('it failed :(');
         });
       },
-      listContacts: function () {
+      listContacts: function (sortBy) {
+        var sortedItem = sortBy || 'last_name';
+
         return $http({
           method: 'GET',
           url: Backand.getApiUrl() + '/1/objects/items',
@@ -131,11 +149,8 @@
             sort: ''
           }
         }).then(function (response) {
-          console.log('here is the response');
-          console.log(response.data);
-          return response.data;
+          return sortData(response.data, sortedItem);
         });
-
       }
     };
   }]);
