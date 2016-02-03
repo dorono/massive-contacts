@@ -22,7 +22,6 @@
         resolve: {
           contactData: function (ContactsFactory) {
             console.log('from the app');
-            //console.log(ContactsFactory.listContacts());
             return ContactsFactory.listContacts();
           }
         },

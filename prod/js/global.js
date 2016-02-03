@@ -22,7 +22,6 @@
         resolve: {
           contactData: function (ContactsFactory) {
             console.log('from the app');
-            //console.log(ContactsFactory.listContacts());
             return ContactsFactory.listContacts();
           }
         },
@@ -48,17 +47,6 @@
 
   var drctv = angular.module('ContactsApp.directives', ['ui.router']);
 
-  drctv.directive('formBehavior', function ($state) {
-    return {
-      link: function (scope, element) {
-        element.bind('submit', function () {
-          scope.contactData = null;
-          $state.go('home');
-        });
-      }
-    }
-  });
-
   drctv.directive('preventDupe', function () {
     return {
       link: function (scope, element) {
@@ -70,21 +58,23 @@
   });
 }());
 
+// http://nathanleclaire.com/blog/2014/01/31/banging-your-head-against-an-angularjs-issue-try-this/
+
 (function () {
   'use strict';
   var ctrl = angular.module('ContactsApp.controllers', []);
 
-  ctrl.controller('ContactsCtrl', function ($scope, $state, $timeout, ContactsFactory, contactData) {
+  ctrl.controller('ContactsCtrl', function ($scope, $timeout, ContactsFactory, contactData) {
     console.log('data in the controller');
     console.log(contactData);
 
-    $scope.contactData = contactData;
-    $scope.index = 0;
-    $scope.uiRouterState = $state;
-    $scope.sortType = 'last_name';
-    $scope.sortReverse = false;
-    $scope.searchContacts = '';
-
+    $timeout(function () {
+      $scope.contactData = contactData.data.data;
+      $scope.index = 0;
+      $scope.sortType = 'id';
+      $scope.sortReverse = false;
+      $scope.searchContacts = '';
+    });
   });
 
   ctrl.controller('AddContactCtrl', function ($scope, ContactsFactory) {
@@ -99,7 +89,7 @@
   'use strict';
 
   var services = angular.module('ContactsApp.services', []);
-  services.factory('ContactsFactory', ['$http', 'Backand', function ($http, Backand) {
+  services.factory('ContactsFactory', ['$http', 'Backand', '$q', '$state', function ($http, Backand, $q, $state) {
     function getApiUrl (objectName, Backand) {
       return Backand.getApiUrl() + '/1/objects/' + objectName;
     }
@@ -132,14 +122,16 @@
         .then(function (data) {
           console.log(data);
           console.log('it worked!');
+          $state.go('home');
         }, function (data) {
             console.log('it failed :(');
         });
       },
       listContacts: function (sortBy) {
-        var sortedItem = sortBy || 'last_name';
+        var sortedItem = sortBy || 'first_name';
+        var deferred = $q.defer();
 
-        return $http({
+        $http({
           method: 'GET',
           url: Backand.getApiUrl() + '/1/objects/items',
           params: {
@@ -149,8 +141,12 @@
             sort: ''
           }
         }).then(function (response) {
+          window.data = response;
+          deferred.resolve(response);
           return sortData(response.data, sortedItem);
         });
+
+        return deferred.promise;
       }
     };
   }]);

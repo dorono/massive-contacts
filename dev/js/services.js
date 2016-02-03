@@ -2,7 +2,7 @@
   'use strict';
 
   var services = angular.module('ContactsApp.services', []);
-  services.factory('ContactsFactory', ['$http', 'Backand', function ($http, Backand) {
+  services.factory('ContactsFactory', ['$http', 'Backand', '$q', '$state', function ($http, Backand, $q, $state) {
     function getApiUrl (objectName, Backand) {
       return Backand.getApiUrl() + '/1/objects/' + objectName;
     }
@@ -35,14 +35,16 @@
         .then(function (data) {
           console.log(data);
           console.log('it worked!');
+          $state.go('home');
         }, function (data) {
             console.log('it failed :(');
         });
       },
       listContacts: function (sortBy) {
-        var sortedItem = sortBy || 'last_name';
+        var sortedItem = sortBy || 'first_name';
+        var deferred = $q.defer();
 
-        return $http({
+        $http({
           method: 'GET',
           url: Backand.getApiUrl() + '/1/objects/items',
           params: {
@@ -52,8 +54,12 @@
             sort: ''
           }
         }).then(function (response) {
+          window.data = response;
+          deferred.resolve(response);
           return sortData(response.data, sortedItem);
         });
+
+        return deferred.promise;
       }
     };
   }]);
